@@ -7,8 +7,8 @@ const tabs = ["Swift", "Kotlin", "React Native", "Flutter", "Unity"];
 export default function IntegrationSection() {
   return (
     <Section className="bg-[#0f0d14] py-20">
-      <Container className="grid gap-12 lg:grid-cols-[1.05fr_1fr] lg:items-center">
-        <div className="space-y-7 text-white">
+      <Container className="grid min-w-0 gap-12 lg:grid-cols-[1.05fr_1fr] lg:items-center">
+        <div className="min-w-0 space-y-7 text-white">
           <div className="space-y-3">
             <h2 className="text-3xl font-extrabold sm:text-4xl">
               Интегрируйте покупки в приложении
@@ -62,14 +62,14 @@ export default function IntegrationSection() {
           </div>
         </div>
 
-        <div className="space-y-4">
-          <div className="rounded-2xl border border-[#1f1a2d] bg-[#15121c] shadow-[0_26px_70px_-45px_rgba(0,0,0,0.65)]">
-            <div className="flex items-center gap-6 border-b border-[#1f1a2d] px-6 py-3 text-sm font-semibold text-[#a9a3b9]">
+        <div className="min-w-0 space-y-4">
+          <div className="min-w-0 overflow-hidden rounded-2xl border border-[#1f1a2d] bg-[#15121c] shadow-[0_26px_70px_-45px_rgba(0,0,0,0.65)]">
+            <div className="flex max-w-full items-center gap-6 overflow-x-auto border-b border-[#1f1a2d] px-6 py-3 text-sm font-semibold text-[#a9a3b9]">
               {tabs.map((tab, index) => (
                 <button
                   key={tab}
                   type="button"
-                  className={`pb-2 transition ${
+                  className={`min-w-max pb-2 transition ${
                     index === 0
                       ? "border-b-2 border-[#c7b3ff] text-white"
                       : "hover:text-white"
@@ -81,7 +81,7 @@ export default function IntegrationSection() {
               <div className="ml-auto text-xs text-[#6f6783]"> </div>
             </div>
 
-            <div className="relative overflow-hidden rounded-b-2xl bg-[#0f0d14]">
+            <div className="relative min-w-0 overflow-hidden rounded-b-2xl bg-[#0f0d14]">
               <CodeBlock />
             </div>
           </div>
@@ -94,7 +94,9 @@ export default function IntegrationSection() {
               100% Open Source
             </div>
             <a
-              href="#"
+              href="https://github.com/adaptyteam"
+              target="_blank"
+              rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-full border border-[#1f1a2d] px-4 py-2 text-[#c7b3ff] hover:border-[#2d2443]"
             >
               Go to GitHub ↗
@@ -108,7 +110,7 @@ export default function IntegrationSection() {
 
 function CodeBlock() {
   return (
-    <pre className="overflow-auto px-6 py-5 text-sm leading-7 text-[#cfc9da]">
+    <pre className="min-w-0 overflow-auto px-6 py-5 text-sm leading-7 text-[#cfc9da]">
       <code>
         <span className="text-[#7c7d83]">// Your app&apos;s code</span>
         {"\n"}

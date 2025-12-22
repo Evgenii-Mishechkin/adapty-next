@@ -89,7 +89,7 @@ export default function HeroSection() {
                 />
               </div>
 
-              <div className="absolute -left-16 bottom-10 hidden w-[190px] xl:block 2xl:-left-24 2xl:w-[190px]">
+              <div className="md:flex hidden absolute -left-16 bottom-10 max-w-[190px] xl:block 2xl:-left-24 2xl:w-[190px]">
                 <div className="relative overflow-hidden rounded-[40px] bg-white shadow-[0_32px_80px_-40px_rgba(0,0,0,0.45)] ring-1 ring-black/5">
                   <Image
                     src="/adapty-paywall-demo-preview@2x.webp"
