@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type NavItem = {
   label: string;
@@ -46,37 +46,68 @@ const MOBILE_PANEL_TOP_OFFSET_PX = 72;
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuRendered, setIsMobileMenuRendered] = useState(false);
+  const closeTimerRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 4);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+  const openMobileMenu = useCallback(() => {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+
+    setIsMobileMenuRendered(true);
+    requestAnimationFrame(() => setIsMobileMenuOpen(true));
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(false);
+
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+
+    closeTimerRef.current = window.setTimeout(() => {
+      setIsMobileMenuRendered(false);
+      closeTimerRef.current = null;
+    }, 500);
   }, []);
 
   useEffect(() => {
-    if (!isMobileMenuOpen) return;
+    const onScroll = () => setIsScrolled(window.scrollY > 4);
+    const rafId = requestAnimationFrame(onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuRendered) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsMobileMenuOpen(false);
+      if (event.key === "Escape") closeMobileMenu();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isMobileMenuOpen]);
+  }, [closeMobileMenu, isMobileMenuRendered]);
 
   useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    document.body.style.overflow = isMobileMenuRendered ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuRendered]);
 
   const headerClassName = useMemo(() => {
     const base =
-      "sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/70";
+      "sticky top-0 z-50 w-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/70 transition-shadow duration-300 ease-out";
     return isScrolled
       ? `${base} border-b border-black/10 shadow-[0_8px_30px_rgba(0,0,0,0.08)]`
       : `${base} border-b border-transparent`;
   }, [isScrolled]);
+
+  const isMobileMenuShown = isMobileMenuRendered;
 
   return (
     <>
@@ -100,7 +131,7 @@ export default function Header() {
 
             <button
               type="button"
-              className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-black/15 bg-white px-2.5 py-1.5 text-xs font-semibold text-black hover:border-black/25"
+              className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-black/15 bg-white px-2.5 py-1.5 text-xs font-semibold text-black transition-colors duration-300 ease-out hover:border-black/25"
               aria-label="Language selector"
             >
               RU
@@ -118,7 +149,7 @@ export default function Header() {
           <div className="hidden shrink-0 items-center gap-3 [@media(min-width:1201px)]:flex">
             <Link
               href="https://app.adapty.io/login"
-              className="text-sm font-semibold text-black/80 hover:text-black"
+              className="text-sm font-semibold text-black/80 transition-colors duration-300 ease-out hover:text-black"
               target="_blank"
               rel="noreferrer"
             >
@@ -126,7 +157,7 @@ export default function Header() {
             </Link>
             <Link
               href="https://app.adapty.io/registration"
-              className="inline-flex items-center gap-2 rounded-xl border border-[#6a3bff] bg-white px-4 py-2 text-sm font-semibold text-[#6a3bff] shadow-sm transition hover:bg-[#6a3bff]/5"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#6a3bff] bg-white px-4 py-2 text-sm font-semibold text-[#6a3bff] shadow-sm transition-colors duration-300 ease-out hover:bg-[#6a3bff]/5"
               target="_blank"
               rel="noreferrer"
             >
@@ -135,7 +166,7 @@ export default function Header() {
             </Link>
             <Link
               href="/schedule-demo"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#6a3bff] px-5 py-2 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(106,59,255,0.9)] transition hover:brightness-110"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#6a3bff] px-5 py-2 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(106,59,255,0.9)] transition duration-300 ease-out hover:brightness-110"
             >
               Запись на демо
               <ArrowRight className="h-4 w-4" />
@@ -148,7 +179,7 @@ export default function Header() {
             <div className="hidden items-center gap-2 [@media(min-width:576px)]:flex">
               <Link
                 href="https://app.adapty.io/registration"
-                className="inline-flex items-center gap-2 rounded-xl border border-[#6a3bff] bg-white px-4 py-2 text-sm font-semibold text-[#6a3bff] shadow-sm transition hover:bg-[#6a3bff]/5"
+                className="inline-flex items-center gap-2 rounded-xl border border-[#6a3bff] bg-white px-4 py-2 text-sm font-semibold text-[#6a3bff] shadow-sm transition-colors duration-300 ease-out hover:bg-[#6a3bff]/5"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -157,7 +188,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/schedule-demo"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#6a3bff] px-5 py-2 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(106,59,255,0.9)] transition hover:brightness-110"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#6a3bff] px-5 py-2 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(106,59,255,0.9)] transition duration-300 ease-out hover:brightness-110"
               >
                 Запись на демо
                 <ArrowRight className="h-4 w-4" />
@@ -180,12 +211,20 @@ export default function Header() {
 
             <button
               type="button"
-              aria-label={isMobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
-              aria-expanded={isMobileMenuOpen}
-              onClick={() => setIsMobileMenuOpen((open) => !open)}
-              className="grid h-11 w-11 place-items-center rounded-xl border border-black/10 bg-white text-black shadow-sm hover:bg-black/5"
+              aria-label={isMobileMenuShown ? "Закрыть меню" : "Открыть меню"}
+              aria-expanded={isMobileMenuShown}
+              onClick={() => {
+                if (!isMobileMenuShown) {
+                  openMobileMenu();
+                  return;
+                }
+
+                if (isMobileMenuOpen) closeMobileMenu();
+                else openMobileMenu();
+              }}
+              className="grid h-11 w-11 place-items-center rounded-xl border border-black/10 bg-white text-black shadow-sm transition-colors duration-300 ease-out hover:bg-black/5"
             >
-              {isMobileMenuOpen ? (
+              {isMobileMenuShown ? (
                 <CloseIcon className="h-5 w-5" />
               ) : (
                 <BurgerIcon className="h-5 w-5" />
@@ -195,26 +234,29 @@ export default function Header() {
         </div>
       </header>
 
-      {isMobileMenuOpen ? (
+      {isMobileMenuRendered ? (
         <div className="fixed inset-0 z-40">
           <button
             type="button"
             aria-label="Закрыть меню"
-            className="absolute bottom-0 left-0 right-0 top-[72px] bg-black/30"
+          className="absolute bottom-0 left-0 right-0 top-[72px] bg-black/30"
             style={{ top: MOBILE_PANEL_TOP_OFFSET_PX }}
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={closeMobileMenu}
           />
 
           <aside
-            className="absolute bottom-0 right-0 w-[360px] max-w-[92vw] bg-white shadow-2xl"
+            className={`absolute bottom-0 right-0 w-[360px] max-w-[92vw] bg-white shadow-2xl transition-transform duration-500 ease-out will-change-transform motion-reduce:transition-none ${
+              isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
             style={{ top: MOBILE_PANEL_TOP_OFFSET_PX }}
+            aria-hidden={!isMobileMenuOpen}
           >
-            <nav className="max-h-full overflow-auto px-2 py-2">
+            <nav className="max-h-full overflow-auto px-2 py-2 pb-32">
               {mobileMenu.map((item) => (
                 <MobileRow
                   key={item.label}
                   item={item}
-                  onNavigate={() => setIsMobileMenuOpen(false)}
+                  onNavigate={closeMobileMenu}
                 />
               ))}
             </nav>
@@ -223,7 +265,7 @@ export default function Header() {
               <div className="grid grid-cols-2 gap-3">
                 <Link
                   href="https://app.adapty.io/registration"
-                  className="inline-flex items-center justify-center rounded-xl border border-[#6a3bff] bg-white px-4 py-3 text-sm font-semibold text-[#6a3bff]"
+                  className="inline-flex items-center justify-center rounded-xl border border-[#6a3bff] bg-white px-4 py-3 text-sm font-semibold text-[#6a3bff] transition-colors duration-300 ease-out hover:bg-[#6a3bff]/5"
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -231,7 +273,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/schedule-demo"
-                  className="inline-flex items-center justify-center rounded-xl bg-[#6a3bff] px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(106,59,255,0.9)]"
+                  className="inline-flex items-center justify-center rounded-xl bg-[#6a3bff] px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(106,59,255,0.9)] transition duration-300 ease-out hover:brightness-110"
                 >
                   Запись на демо
                 </Link>
@@ -260,7 +302,11 @@ function DesktopNavItem({ item }: { item: NavItem }) {
         href={item.href}
         target="_blank"
         rel="noreferrer"
-        className={item.label === "web2app" ? "text-[#f59e0b]" : "hover:text-black"}
+        className={
+          item.label === "web2app"
+            ? "text-[#f59e0b] transition-colors duration-300 ease-out"
+            : "transition-colors duration-300 ease-out hover:text-black"
+        }
       >
         {content}
       </a>
@@ -269,14 +315,20 @@ function DesktopNavItem({ item }: { item: NavItem }) {
 
   if (item.href === "#") {
     return (
-      <button type="button" className="hover:text-black">
+      <button
+        type="button"
+        className="transition-colors duration-300 ease-out hover:text-black"
+      >
         {content}
       </button>
     );
   }
 
   return (
-    <Link href={item.href} className="hover:text-black">
+    <Link
+      href={item.href}
+      className="transition-colors duration-300 ease-out hover:text-black"
+    >
       {content}
     </Link>
   );
@@ -290,7 +342,7 @@ function MobileRow({
   onNavigate: () => void;
 }) {
   const className =
-    "flex w-full items-center justify-between px-5 py-5 text-base font-semibold text-black";
+    "flex w-full items-center justify-between px-5 py-5 text-base font-semibold text-black transition-colors duration-300 ease-out hover:bg-black/5";
 
   const right =
     item.hasSubmenu || item.external ? (
@@ -357,7 +409,7 @@ function IconLink({
   external?: boolean;
 }) {
   const className =
-    "grid h-11 w-11 place-items-center rounded-xl border border-black/10 bg-white text-black/80 shadow-sm hover:text-black";
+    "grid h-11 w-11 place-items-center rounded-xl border border-black/10 bg-white text-black/80 shadow-sm transition-colors duration-300 ease-out hover:border-black/20 hover:bg-black/5 hover:text-black";
 
   if (external) {
     return (
