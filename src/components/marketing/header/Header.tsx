@@ -98,7 +98,7 @@ export default function Header() {
             <LanguageSwitcher />
           </div>
 
-          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-6 whitespace-nowrap text-sm font-semibold text-black [@media(min-width:1201px)]:flex">
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-6 whitespace-nowrap text-sm font-semibold text-black [@media(min-width:1240px)]:flex">
             {desktopNav.map((item) => (
               <DesktopNav key={item.label} item={item} />
             ))}

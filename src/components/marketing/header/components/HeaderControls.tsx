@@ -113,7 +113,7 @@ export default function HeaderControls({ isMobileMenuShown, onBurgerClick }: Hea
           aria-label={isMobileMenuShown ? "Закрыть меню" : "Открыть меню"}
           aria-expanded={isMobileMenuShown}
           onClick={onBurgerClick}
-          className="grid h-11 w-11 place-items-center rounded-xl border border-black/10 bg-white text-black shadow-sm transition-colors duration-300 ease-out hover:bg-black/5"
+          className="grid h-9 w-9 place-items-center rounded-xl border border-black/10 bg-white text-black shadow-sm transition-colors duration-300 ease-out hover:bg-black/5"
         >
           <div className="relative h-5 w-5">
             <BurgerIcon className={`absolute inset-0 h-5 w-5 transition-opacity duration-500 ease-out ${isMobileMenuShown ? 'opacity-0' : 'opacity-100'}`} />
