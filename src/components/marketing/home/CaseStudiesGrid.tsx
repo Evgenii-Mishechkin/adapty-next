@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 
@@ -141,12 +142,12 @@ export default function CaseStudiesGrid() {
         </div>
 
         <div className="text-center">
-          <a
+          <Link
             className="inline-flex items-center gap-2 text-base font-semibold text-[#1c1a20] underline-offset-4 hover:underline"
             href="/case-studies"
           >
             Открыть все кейсы →
-          </a>
+          </Link>
         </div>
       </Container>
     </Section>

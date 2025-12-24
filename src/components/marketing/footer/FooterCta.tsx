@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
-import Logo from "@/components/ui/Logo";
 
 export default function FooterCta() {
   return (

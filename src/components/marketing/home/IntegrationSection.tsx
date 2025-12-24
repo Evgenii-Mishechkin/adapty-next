@@ -112,7 +112,7 @@ function CodeBlock() {
   return (
     <pre className="min-w-0 overflow-auto px-6 py-5 text-sm leading-7 text-[#cfc9da]">
       <code>
-        <span className="text-[#7c7d83]">// Your app&apos;s code</span>
+        <span className="text-[#7c7d83]">Your app&apos;s code</span>
         {"\n"}
         <span className="text-[#7b9cfe]">import</span> Adapty
         {"\n\n"}
@@ -124,7 +124,7 @@ function CodeBlock() {
         <span className="text-[#f7c266]">&quot;PUBLIC_SDK_KEY&quot;</span>)
         {"\n\n  "}
         <span className="text-[#7c7d83]">
-          // Make a purchase, Adapty handles the rest
+          Make a purchase, Adapty handles the rest
         </span>
         {"\n  "}
         <span className="text-[#7c7d83]">let</span>{" "}
@@ -134,11 +134,11 @@ function CodeBlock() {
         <span className="text-[#9ae1ae]">makePurchase</span>(
         <span className="text-white">product</span>)
         {"\n  "}
-        <span className="text-[#7c7d83]">// successful purchase</span>
+        <span className="text-[#7c7d83]">successful purchase</span>
         {"\n"}
         {"}"} <span className="text-[#7c7d83]">catch</span> {"{"}
         {"\n  "}
-        <span className="text-[#7c7d83]">// handle the error</span>
+        <span className="text-[#7c7d83]">handle the error</span>
         {"\n"}
         {"}"}
       </code>

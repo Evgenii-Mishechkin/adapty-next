@@ -47,9 +47,9 @@ export default function RefundSaverSection() {
               <span className="text-xs text-[#6a6476]">Фото и видео</span>
             </div>
             <p className="mt-4 text-base leading-relaxed text-[#1c1a20]">
-              "Я никогда не думала, что возврат денег может иметь такое значение.
+              &quot;Я никогда не думала, что возврат денег может иметь такое значение.
               Мы просто щелкнули выключателем, настроили его, и вдруг нам
-              показалось, что мы перестали позволять деньгам ускользать".
+              показалось, что мы перестали позволять деньгам ускользать&quot;.
             </p>
             <div className="mt-5 flex items-center gap-3">
               <Image
