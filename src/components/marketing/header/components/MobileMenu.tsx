@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { NavItem } from "./nav-data";
 import { ChevronRight } from "./icons";
+import ActionButtons from "./ActionButtons";
 
 function MobileRow({
   item,
@@ -108,22 +109,7 @@ export default function MobileMenu({
         </nav>
 
         <div className="sticky bottom-0 bg-white p-4">
-          <div className="grid grid-cols-2 gap-3">
-            <Link
-              href="https://app.adapty.io/registration"
-              className="inline-flex items-center justify-center rounded-xl border border-[#6a3bff] bg-white px-4 py-3 text-sm font-semibold text-[#6a3bff] transition-colors duration-300 ease-out hover:bg-[#6a3bff]/5"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Начать
-            </Link>
-            <Link
-              href="/schedule-demo"
-              className="inline-flex items-center justify-center rounded-xl bg-[#6a3bff] px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(106,59,255,0.9)] transition duration-300 ease-out hover:brightness-110"
-            >
-              Запись на демо
-            </Link>
-          </div>
+          <ActionButtons />
         </div>
       </aside>
     </div>

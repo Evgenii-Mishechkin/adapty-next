@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, LoginIcon, CalendarIcon, BurgerIcon, CloseIcon } from "./icons";
+import ActionButtons from "./ActionButtons";
 
 function IconLink({
   href,
@@ -45,7 +46,7 @@ export default function HeaderControls({ isMobileMenuShown, onBurgerClick }: Hea
   return (
     <>
       {/* Desktop right controls */}
-      <div className="hidden shrink-0 items-center gap-3 [@media(min-width:1201px)]:flex">
+      <div className="hidden shrink-0 items-center gap-3 [@media(min-width:1240px)]:flex">
         <Link
           href="https://app.adapty.io/login"
           className="text-sm font-semibold text-black/80 transition-colors duration-300 ease-out hover:text-black"
@@ -54,26 +55,11 @@ export default function HeaderControls({ isMobileMenuShown, onBurgerClick }: Hea
         >
           Войти
         </Link>
-        <Link
-          href="https://app.adapty.io/registration"
-          className="inline-flex items-center gap-2 rounded-xl border border-[#6a3bff] bg-white px-4 py-2 text-sm font-semibold text-[#6a3bff] shadow-sm transition-colors duration-300 ease-out hover:bg-[#6a3bff]/5"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Начать
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-        <Link
-          href="/schedule-demo"
-          className="inline-flex items-center gap-2 rounded-xl bg-[#6a3bff] px-5 py-2 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(106,59,255,0.9)] transition duration-300 ease-out hover:brightness-110"
-        >
-          Запись на демо
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        <ActionButtons layout="inline" />
       </div>
 
       {/* Mobile/Tablet controls */}
-      <div className="flex shrink-0 items-center gap-2 [@media(min-width:1201px)]:hidden">
+      <div className="flex shrink-0 items-center gap-2 [@media(min-width:1240px)]:hidden">
         {/* 576px+ : show text CTAs */}
         <div className="hidden items-center gap-2 [@media(min-width:576px)]:flex">
           <Link

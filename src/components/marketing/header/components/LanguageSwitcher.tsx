@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { ChevronDown } from "./icons";
 
 type Language = {
@@ -57,9 +58,11 @@ export default function LanguageSwitcher() {
         aria-label="Language selector"
         aria-expanded={isOpen}
       >
-        <img
+        <Image
           src={currentLanguage.flag}
           alt=""
+          width={24}
+          height={16}
           className="h-4 w-6 shrink-0 hidden sm:block"
         />
         <span className="uppercase">{currentLanguage.code}</span>
@@ -80,9 +83,11 @@ export default function LanguageSwitcher() {
                 lang.code === currentLang ? "bg-black/5 font-semibold" : ""
               }`}
             >
-              <img
+              <Image
                 src={lang.flag}
                 alt=""
+                width={24}
+                height={16}
                 className="h-4 w-6 shrink-0"
               />
               <span>{lang.name}</span>
